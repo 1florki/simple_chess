@@ -72,9 +72,9 @@ function drawBoard() {
 
   for (let x = 0; x < 8; x++) {
     for (let y = 0; y < 8; y++) {
-      fill((x % 2 == y % 2 ? blackColor : whiteColor));
+      fill((x % 2 == y % 2 ? whiteColor : blackColor));
       rect(x * cellSize, y * cellSize, cellSize, cellSize);
-      let figure = b[7 - y][x];
+      let figure = b[y][x];
       if (figure) {
         if (incheck && figure.color == currentTurn && figure.type == "k") {
           fill(150, 0, 0, 60);
@@ -139,7 +139,7 @@ function drawBoard() {
     for (let m of possible) {
       let x = m.from.charCodeAt(0) - 97;
       let y = m.from.charCodeAt(1) - 49;
-      rect(x * cellSize, y * cellSize, cellSize, cellSize);
+      rect(x * cellSize, (7 - y) * cellSize, cellSize, cellSize);
     }
   }
 }
@@ -202,7 +202,7 @@ function drawFigure(name, white, x, y, s) {
   }
   push();
   translate(x * s + s / 2, y * s + s / 2);
-  if (white) {
+  if (!white) {
     rotate(PI);
   }
   let r = 200;
@@ -226,13 +226,13 @@ function getCellPosition(posx, posy) {
 }
 
 function cellCode(x, y) {
-  return letters[x] + (y + 1);
+  return letters[x] + (8 - y);
 }
 
 function highlightCellWithCode(code) {
   let x = code.charCodeAt(0) - 97;
   let y = code.charCodeAt(1) - 49;
-  circle(x * cellSize + cellSize / 2, y * cellSize + cellSize / 2, cellSize / 8)
+  circle(x * cellSize + cellSize / 2, (7 - y) * cellSize + cellSize / 2, cellSize / 8)
 }
 
 function movePossible(x, y) {
